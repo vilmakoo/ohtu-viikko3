@@ -2,4 +2,4 @@ language: java
 
 script:
  - mvn integration-test
- - mvn jxr:jxr checkstyle:check -Dcheckstyle.config.location=my_checks.kopio.xml
+ - mvn jxr:jxr checkstyle:check -Dcheckstyle.config.location=my_checks.xml
