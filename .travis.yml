@@ -1,4 +1,5 @@
 language: java
 
-mvn integration-test
-mvn checkstyle:check -D"checkstyle.config.location=my_checks.xml"
+script:
+ - mvn integration-test
+ - mvn jxr:jxr checkstyle:check -Dcheckstyle.config.location=my_checks.kopio.xml
