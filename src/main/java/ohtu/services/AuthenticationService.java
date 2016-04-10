@@ -28,13 +28,10 @@ public class AuthenticationService {
         if (userDao.findByName(username) != null) {
             return false;
         }
-
         if (invalid(username, password)) {
             return false;
         }
-
         userDao.add(new User(username, password));
-
         return true;
     }
 
@@ -52,6 +49,10 @@ public class AuthenticationService {
         for (User user : userDao.listAll()) {
             usernamesInUse.add(user.getUsername());
         }
+        return username.length() >= 3 && !usernamesInUse.contains(username) && usernameContainsOnlyLetters(username);
+    }
+    
+    private boolean usernameContainsOnlyLetters(String username) {
         for (int i = 0; i < username.length(); i++) {
             String kirjaimet = "abcdefghijklmnopqrstuvwxyz";
             String merkki = "" + username.charAt(i);
@@ -59,22 +60,21 @@ public class AuthenticationService {
                 return false;
             }
         }
-        
-        return username.length() >= 3 && !usernamesInUse.contains(username);
+        return true;
     }
     
     private boolean passwordIsValid(String password) {
-        boolean sisaltaaErikoismerkinTaiNumeron = false;
-        
+        return password.length() >= 8 && passwordContainsSpecialCharacterOrNumber(password);
+    }
+    
+    private boolean passwordContainsSpecialCharacterOrNumber(String password) {
         for (int i = 0; i < password.length(); i++) {
             String merkki = "" + password.charAt(i);
-            String erikoismerkit = "!@#$%&*()_+=-|<>?{}[]~";
-            String numerot = "0123456789";
-            if (erikoismerkit.contains(merkki) || numerot.contains(merkki)) {
-                sisaltaaErikoismerkinTaiNumeron = true;
+            String erikoismerkit = "!@#$%&*()_+=-|<>?{}[]~0123456789";
+            if (erikoismerkit.contains(merkki)) {
+                return true;
             }
         }
-        
-        return password.length() >= 8 && sisaltaaErikoismerkinTaiNumeron;
+        return false;
     }
 }
